@@ -1,0 +1,77 @@
+package bin;
+import java.util.*;
+import java.io.*;
+
+public class InputGearCode
+{
+	public static String[][] gearSettings;
+	public static int[] reflector;
+	public static void main(String[] args) throws IOException
+	{
+		Scanner in = new Scanner(System.in);
+		
+		System.out.print("Input code for the Static Gear:");
+		String staticG = in.nextLine();
+		System.out.print("Input code for Gear 1 Input:   ");
+		String gear1I = in.nextLine();
+		System.out.print("Input code for Gear 1 Output:  ");
+		String gear1O = in.nextLine();
+		System.out.print("Input code for Gear 2 Input:   ");
+		String gear2I = in.nextLine();
+		System.out.print("Input code for Gear 2 Output:  ");
+		String gear2O = in.nextLine();
+		System.out.print("Input code for Gear 3 Input:   ");
+		String gear3I = in.nextLine();
+		System.out.print("Input code for Gear 3 Output:  ");
+		String gear3O = in.nextLine();
+		System.out.print("Input code for Gear 4 Input:   ");
+		String gear4I = in.nextLine();
+		System.out.print("Input code for Gear 4 Output:  ");
+		String gear4O = in.nextLine();
+		System.out.print("Input code for Gear 5 Input:   ");
+		String gear5I = in.nextLine();
+		System.out.print("Input code for Gear 5 Output:  ");
+		String gear5O = in.nextLine();
+		
+		int[] reflector = {25,24,23,22,21,20,19,18,17,16,15,14,13,12,11,10,9,8,7,6,5,4,3,2,1,0};
+		
+		
+		
+		String[] staticGear = staticG.split("");
+		String[] gear1Input = gear1I.split("");
+		String[] gear1Output = gear1O.split("");
+		String[] gear2Input = gear2I.split("");
+		String[] gear2Output = gear2O.split("");
+		String[] gear3Input = gear3I.split("");
+		String[] gear3Output = gear3O.split("");
+		String[] gear4Input = gear4I.split("");
+		String[] gear4Output = gear4O.split("");
+		String[] gear5Input = gear5I.split("");
+		String[] gear5Output = gear5O.split("");
+		
+		String[][] settingsList = new String[11][26];
+		settingsList[0] = staticGear;
+		settingsList[1] = gear1Input;
+		settingsList[2] = gear1Output;
+		settingsList[3] = gear2Input;
+		settingsList[4] = gear2Output;
+		settingsList[5] = gear3Input;
+		settingsList[6] = gear3Output;
+		settingsList[7] = gear4Input;
+		settingsList[8] = gear4Output;
+		settingsList[9] = gear5Input;
+		settingsList[10] = gear5Output;
+		
+		ObjectOutputStream outGearSettings = new ObjectOutputStream(new FileOutputStream("GearSettings.txt"));
+		outGearSettings.writeObject(settingsList);
+		outGearSettings.flush();
+		outGearSettings.close();
+		
+		ObjectOutputStream outReflector = new ObjectOutputStream(new FileOutputStream("Reflector.txt"));
+		outReflector.writeObject(reflector);
+		outReflector.flush();
+		outReflector.close();
+		
+	}
+
+}
