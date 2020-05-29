@@ -8,3 +8,5 @@ Download all the files and place them into the same folder
 Run the 'User Interface' file and follow the instructions in the command line
 # Project Status
 This project has been completed.
+# Video
+https://www.youtube.com/watch?v=mCK8NKxk5AE
