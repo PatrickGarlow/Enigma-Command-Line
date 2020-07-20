@@ -6,6 +6,8 @@ In WWII Germany created the Enigma encryption machine that had a plug board and 
 Download all the files and place them into the same folder
 # Usage
 Run the 'User Interface' file and follow the instructions in the command line
+# Video
+https://youtu.be/mCK8NKxk5AE
 # Project Status
 This project has been completed.
 
