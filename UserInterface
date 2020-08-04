@@ -1,0 +1,462 @@
+package bin;
+
+import java.util.*;
+import java.io.*;
+
+public class UserInterface
+{
+
+	public static String[] slot1In;
+	public static String[] slot1Out;
+	public static String[] slot2In;
+	public static String[] slot2Out;
+	public static String[] slot3In;
+	public static String[] slot3Out;
+	
+	public static String[] patch1;
+	public static String[] patch2;
+	public static String[] patch3;
+	public static String[] patch4;
+	public static String[] patch5;
+	public static String[] patch6;
+	public static String[] patch7;
+	public static String[] patch8;
+	public static String[] patch9;
+	public static String[] patch10;
+	
+	public static String[][] gearSettings;
+	public static int[] reflector;
+	public static String[] staticGear;
+	
+	public static int setting1;
+	public static int setting2;
+	public static int setting3;
+	
+	public static String out = "";
+	
+	public static void main(String[] args) throws FileNotFoundException, ClassNotFoundException, IOException
+	{
+		Scanner in = new Scanner(System.in);
+		getArrays();
+		chooseGears();
+		setGears();
+		choosePatch();
+		System.out.print("Input code (No spaces):");
+		String input = in.nextLine().toUpperCase();
+		String[] inputArr = input.split("");
+		for(int x = 0; x < inputArr.length; x++)
+		{
+			String str1 =  patchPanel(inputArr[x]);
+			//System.out.println(inputArr[x]);
+			int pos1 = getStatic(staticGear, str1);
+			//System.out.println(pos1);
+			int pos2 = gear(slot1In,slot1Out,pos1);
+			//System.out.println(pos2);
+			int pos3 = gear(slot2In,slot2Out,pos2);
+			//System.out.println(pos3);
+			int pos4 = gear(slot3In, slot3Out, pos3);
+			//System.out.println(pos4);
+			int pos5 = reflectorPanel(reflector, pos4);
+			//System.out.println(pos5);
+			int pos6 = gear(slot3Out, slot3In, pos5);
+			//System.out.println(pos6);
+			int pos7 = gear(slot2Out, slot2In, pos6);
+			//System.out.println(pos7);
+			int pos8 = gear(slot1Out, slot1In, pos7);
+			//System.out.println(pos8);
+			String str2 = getStatic(staticGear, pos8);
+			//System.out.println(str2);
+			String str3 = patchPanel(str2);
+			out = out + str3;
+			rotateGears();
+			//System.out.println("");
+		}
+		
+		System.out.println(out);
+		
+	}
+	public static void getArrays() throws FileNotFoundException, IOException, ClassNotFoundException
+	{
+		ObjectInputStream inputGear = new ObjectInputStream(new FileInputStream("GearSettings.txt"));
+		ObjectInputStream inputReflector = new ObjectInputStream(new FileInputStream("Reflector.txt"));
+		gearSettings = (String[][])inputGear.readObject();
+		reflector = (int[])inputReflector.readObject();
+		staticGear = gearSettings[0];
+	}
+	public static void chooseGears() throws FileNotFoundException, IOException
+	{
+		Scanner in = new Scanner(System.in).useDelimiter("\\s*,\\s*");
+		ObjectInputStream input = new ObjectInputStream(new FileInputStream("GearSettings.txt"));
+		System.out.print("What Gears do you want to use? (1-5)(n,n,n,)");
+		int num1 = in.nextInt();
+		int num2 = in.nextInt();
+		int num3 = in.nextInt();
+		if(num1 == 1)
+		{
+			slot1In = gearSettings[1];
+			slot1Out = gearSettings[2];
+		}
+		else if(num1 == 2)
+		{
+			slot1In = gearSettings[3];
+			slot1Out = gearSettings[4];
+		}
+		else if(num1 == 3)
+		{
+			slot1In = gearSettings[5];
+			slot1Out = gearSettings[6];
+		}
+		else if(num1 == 4)
+		{
+			slot1In = gearSettings[7];
+			slot1Out = gearSettings[8];
+		}
+		else
+		{
+			slot1In = gearSettings[9];
+			slot1Out = gearSettings[10];
+		}
+		
+		if(num2 == 1)
+		{
+			slot2In = gearSettings[1];
+			slot2Out = gearSettings[2];
+		}
+		else if(num2 == 2)
+		{
+			slot2In = gearSettings[3];
+			slot2Out = gearSettings[4];
+		}
+		else if(num2 == 3)
+		{
+			slot2In = gearSettings[5];
+			slot2Out = gearSettings[6];
+		}
+		else if(num2 == 4)
+		{
+			slot2In = gearSettings[7];
+			slot2Out = gearSettings[8];
+		}
+		else
+		{
+			slot2In = gearSettings[9];
+			slot2Out = gearSettings[10];
+		}
+		
+		if(num3 == 1)
+		{
+			slot3In = gearSettings[1];
+			slot3Out = gearSettings[2];
+		}
+		else if(num3 == 2)
+		{
+			slot3In = gearSettings[3];
+			slot3Out = gearSettings[4];
+		}
+		else if(num3 == 3)
+		{
+			slot3In = gearSettings[5];
+			slot3Out = gearSettings[6];
+		}
+		else if(num3 == 4)
+		{
+			slot3In = gearSettings[7];
+			slot3Out = gearSettings[8];
+		}
+		else
+		{
+			slot3In = gearSettings[9];
+			slot3Out = gearSettings[10];
+		}
+	}
+	public static void setGears()
+	{
+		Scanner in = new Scanner(System.in).useDelimiter("\\s*,\\s*");
+		System.out.print("What gear Settings do you want to use? (1-25)(n,n,n,)");
+		setting1 = in.nextInt();
+		setting2 = in.nextInt();
+		setting3 = in.nextInt();
+		for(int x = 0; x < setting1; x++)
+		{
+			String[] array2 = new String[26];
+			for(int y = 0; y < 26 - 1; y++)
+			{
+				array2[y+1] = slot1In[y];
+			} 
+			array2[0] = slot1In[slot1In.length-1];
+			slot1In = array2;
+			
+			String[] array1 = new String[26];
+			for(int z = 0; z < 26 - 1; z++)
+			{
+				array1[z+1] = slot1Out[z];
+			} 
+			array1[0] = slot1Out[slot1Out.length-1];
+			slot1Out = array1;
+		}
+		for(int x = 0; x < setting2; x++)
+		{
+			String[] array2 = new String[26];
+			for(int y = 0; y < 26 - 1; y++)
+			{
+				array2[y+1] = slot2In[y];
+			} 
+			array2[0] = slot2In[slot2In.length-1];
+			slot2In = array2;
+			
+			String[] array1 = new String[26];
+			for(int z = 0; z < 26 - 1; z++)
+			{
+				array1[z+1] = slot2Out[z];
+			} 
+			array1[0] = slot2Out[slot2Out.length-1];
+			slot2Out = array1;
+			
+		}
+		for(int x = 0; x < setting3; x++)
+		{
+			String[] array2 = new String[26];
+			for(int y = 0; y < 26 - 1; y++)
+			{
+				array2[y+1] = slot3In[y];
+			} 
+			array2[0] = slot3In[slot3In.length-1];
+			slot3In = array2;
+			
+			String[] array1 = new String[26];
+			for(int z = 0; z < 26 - 1; z++)
+			{
+				array1[z+1] = slot3Out[z];
+			} 
+			array1[0] = slot3Out[slot3Out.length-1];
+			slot3Out = array1;
+		}
+	}
+	public static void rotateGears()
+	{
+		if((setting1 == 25) && (setting2 != 25))
+		{
+			setting1 = 0;
+			rotateGears1(slot1In);
+			rotateGears1(slot1Out);
+			setting2++;
+			rotateGears1(slot2In);
+			rotateGears1(slot2Out);
+		}
+		else if((setting1 == 25) && (setting2 == 25))
+		{
+			setting1 = 0;
+			rotateGears1(slot1In);
+			rotateGears1(slot1Out);
+			setting2 = 0;
+			rotateGears1(slot2In);
+			rotateGears1(slot2Out);
+			setting3++;
+			rotateGears1(slot3In);
+			rotateGears1(slot3Out);
+		}
+		else if((setting1 == 25) && (setting2 == 25) && (setting3 == 25))
+		{
+			setting1 = 0;
+			rotateGears1(slot1In);
+			rotateGears1(slot1Out);
+			setting2 = 0;
+			rotateGears1(slot2In);
+			rotateGears1(slot2Out);
+			setting3 = 0;
+			rotateGears1(slot3In);
+			rotateGears1(slot3Out);
+		}
+		else
+		{
+			rotateGears1(slot1In);
+			rotateGears1(slot1Out);
+		}
+	}
+	public static String[] rotateGears1(String[] arr)
+	{
+		String[] array2 = new String[26];
+		for(int y = 0; y < 26 - 1; y++)
+		{
+			array2[y+1] = arr[y];
+		} 
+		array2[0] = arr[arr.length-1];
+			
+		return array2;
+	}
+	public static void choosePatch()
+	{
+		Scanner in = new Scanner(System.in).useDelimiter("\\s*,\\s*");
+		System.out.print("What connections do you want for the patch pannel? (aa,)x10:");
+		patch1 = in.next().split("");
+		patch2 = in.next().split("");
+		patch3 = in.next().split("");
+		patch4 = in.next().split("");
+		patch5 = in.next().split("");
+		patch6 = in.next().split("");
+		patch7 = in.next().split("");
+		patch8 = in.next().split("");
+		patch9 = in.next().split("");
+		patch10 = in.next().split("");
+	}
+	public static String patchPanel(String in1)
+	{
+		if(in1.equals(patch1[0]) || in1.equals(patch1[1]))
+		{
+			if(in1.equals(patch1[0]))
+			{
+				return patch1[1];
+			}
+			else
+			{
+				return patch1[0];
+			}
+		}
+		else if(in1.equals(patch2[0]) || in1.equals(patch2[1]))
+		{
+			if(in1.equals(patch2[0]))
+			{
+				return patch2[1];
+			}
+			else
+			{
+				return patch2[0];
+			}
+		}
+		else if(in1.equals(patch3[0]) || in1.equals(patch3[1]))
+		{
+			if(in1.equals(patch3[0]))
+			{
+				return patch3[1];
+			}
+			else
+			{
+				return patch3[0];
+			}
+		}
+		else if(in1.equals(patch4[0]) || in1.equals(patch4[1]))
+		{
+			if(in1.equals(patch4[0]))
+			{
+				return patch4[1];
+			}
+			else
+			{
+				return patch4[0];
+			}
+		}
+		else if(in1.equals(patch5[0]) || in1.equals(patch5[1]))
+		{
+			if(in1.equals(patch5[0]))
+			{
+				return patch5[1];
+			}
+			else
+			{
+				return patch5[0];
+			}
+		}
+		else if(in1.equals(patch6[0]) || in1.equals(patch6[1]))
+		{
+			if(in1.equals(patch6[0]))
+			{
+				return patch6[1];
+			}
+			else
+			{
+				return patch6[0];
+			}
+		}
+		else if(in1.equals(patch7[0]) || in1.equals(patch7[1]))
+		{
+			if(in1.equals(patch7[0]))
+			{
+				return patch7[1];
+			}
+			else
+			{
+				return patch7[0];
+			}
+		}
+		else if(in1.equals(patch8[0]) || in1.equals(patch8[1]))
+		{
+			if(in1.equals(patch8[0]))
+			{
+				return patch8[1];
+			}
+			else
+			{
+				return patch8[0];
+			}
+		}
+		else if(in1.equals(patch9[0]) || in1.equals(patch9[1]))
+		{
+			if(in1.equals(patch9[0]))
+			{
+				return patch9[1];
+			}
+			else
+			{
+				return patch9[0];
+			}
+		}
+		else if(in1.equals(patch10[0]) || in1.equals(patch10[1]))
+		{
+			if(in1.equals(patch10[0]))
+			{
+				return patch10[1];
+			}
+			else
+			{
+				return patch10[0];
+			}
+		}
+		else
+		{
+			return in1;
+		}
+	}
+	public static int getStatic(String[] staticGear, String input)
+	{
+		char thing = input.charAt(0);
+		for(int x = 0; x < staticGear.length;x++)
+		{
+			if(staticGear[x].charAt(0) == thing)
+			{
+				return x;
+			}
+		}
+		return 1;
+	}
+	public static String getStatic(String[] staticGear, int pos)
+	{
+		
+		return staticGear[pos];
+	}
+	public static int gear(String[] A, String[] B, int pos)
+	{
+		String temp1 = A[pos];
+		char temp4 = temp1.charAt(0);
+		for(int x = 0; x < A.length; x++)
+		{
+			String temp2 = B[x];
+			char temp3 = temp2.charAt(0);
+			if(temp3 == temp4)
+			{
+				return x;
+			}
+		}
+		return 1;
+	}
+	public static int reflectorPanel(int[] A, int pos)
+	{
+		for(int x = 0; x < A.length ;x++)
+		{
+			if(A[x] == pos)
+			{
+				return x;
+			}
+		}
+		return 1;
+	}
+}
